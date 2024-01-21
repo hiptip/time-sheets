@@ -33,7 +33,7 @@ module.exports.handler = async (event, context, callback) => {
   console.log(context)
 
   // Save req.body to a file called receipt.json
-  fs.writeFile('/tmp/pdf/receipt.json', JSON.stringify(event), (err) => {
+  fs.writeFile('/tmp/receipt.json', JSON.stringify(event), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
   });

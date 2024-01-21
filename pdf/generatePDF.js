@@ -8,7 +8,7 @@ if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
 
 const INPUT = './pdf/receiptTemplate.docx';
 
-const JSON_INPUT = require('./tmp/receipt.json');
+const JSON_INPUT = require('../tmp/receipt.json');
 
 const credentials =  PDFServicesSdk.Credentials
     .servicePrincipalCredentialsBuilder()
