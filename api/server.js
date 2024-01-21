@@ -45,6 +45,7 @@ app.post('/', (req, res) => {
     .then(() => {
       console.log('PDF generated');
       // await Send the PDF
+
       sendPDF()
         // .then(() => {
         //   console.log('PDF sent');
