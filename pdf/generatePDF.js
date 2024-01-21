@@ -1,14 +1,14 @@
 const PDFServicesSdk = require('@adobe/pdfservices-node-sdk');
 const fs = require('fs');
 
-const OUTPUT = './generatedReceipt.pdf';
+const OUTPUT = './tmp/generatedReceipt.pdf';
 
 // If our output already exists, remove it so we can run the application again.
 if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
 
 const INPUT = './pdf/receiptTemplate.docx';
 
-const JSON_INPUT = require('./receipt.json');
+const JSON_INPUT = require('./tmp/receipt.json');
 
 const credentials =  PDFServicesSdk.Credentials
     .servicePrincipalCredentialsBuilder()

@@ -17,7 +17,7 @@ const sendPDF = () => {
       attachments: [
         {
           filename: 'generatedReceipt.pdf',
-          path: './generatedReceipt.pdf',
+          path: './tmp/generatedReceipt.pdf',
           contentType: 'application/pdf'
         }
       ]
