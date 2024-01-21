@@ -62,4 +62,6 @@ app.post('/', (req, res) => {
   res.send('Got a POST request');
 });
 
-app.listen(3001, () => console.log('Example app is listening on port 3001.'));
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => console.log('Example app is listening on port 3001.'));
