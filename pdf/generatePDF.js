@@ -1,7 +1,7 @@
 const PDFServicesSdk = require('@adobe/pdfservices-node-sdk');
 const fs = require('fs');
 
-const OUTPUT = './tmp/generatedReceipt.pdf';
+const OUTPUT = '../tmp/generatedReceipt.pdf';
 
 // If our output already exists, remove it so we can run the application again.
 if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
