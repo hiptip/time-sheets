@@ -25,13 +25,13 @@ app.use('/request-type', (req, res, next) => {
 });
 
 // add app.get
-app.get('/', (req, res) => {
-  console.log(req.query);
-  res.send('Hello World!');
-});
+// app.post('/', (req, res) => {
+//   console.log(req.query);
+//   res.send('Hello World!');
+// });
 
 // add app.post
-app.post('/process', (req, res) => {
+app.post('/', (req, res) => {
   console.log(req.headers);
   console.log(req.body);
 
