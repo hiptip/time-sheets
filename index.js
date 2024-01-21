@@ -25,7 +25,7 @@ app.use('/request-type', (req, res, next) => {
 });
 
 // add app.get
-app.get('/', (req, res) => {
+app.get('/process-time-sheet', (req, res) => {
   console.log(req.query);
   res.send('Hello World!');
 });
@@ -67,7 +67,7 @@ const port = process.env.PORT || 3000;
 
 const handler = serverless(app);
 
-app.listen(port, () => console.log('Example app is listening on port 3001.'));
+app.listen(port, () => console.log('Example app is listening on port 3000.'));
 
 module.exports.handler = (event, context, callback) => {
   const response = handler(event, context, callback);
