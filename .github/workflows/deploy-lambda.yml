@@ -24,6 +24,11 @@ jobs:
       #     CI: true
       - name: install dependencies
         run: npm install
+        # cd into /pdf and install dependencies
+      - name: install pdf dependencies
+        run: |
+          cd pdf
+          npm install
       - name: zip
         uses: montudor/action-zip@v0.1.0
         with:
