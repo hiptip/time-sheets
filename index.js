@@ -65,3 +65,5 @@ app.post('/', (req, res) => {
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log('Example app is listening on port 3001.'));
+
+module.exports = app;
