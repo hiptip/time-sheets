@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const serverless = require('serverless-http');
 
 var bodyParser = require('body-parser')
 const app = express();
@@ -64,6 +65,11 @@ app.post('/', (req, res) => {
 
 const port = process.env.PORT || 3000;
 
+const handler = serverless(app);
+
 app.listen(port, () => console.log('Example app is listening on port 3001.'));
 
-module.exports = app;
+module.exports.handler = (event, context, callback) => {
+  const response = handler(event, context, callback);
+  return response;
+}
