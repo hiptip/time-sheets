@@ -62,6 +62,10 @@ module.exports.handler = async (event, context, callback) => {
       message: 'Hello World!',
       input: event,
     }),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
   };
 
   callback(null, response);
