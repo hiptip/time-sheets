@@ -1,5 +1,6 @@
 const { generatePDF } = require('./pdf/generatePDF');
 const { sendPDF } = require('./sendEmail');
+const { uploadFileToS3 } = require('./uploadFileToS3');
 const fs = require('fs');
 
 
@@ -38,12 +39,15 @@ module.exports.handler = async (event, context, callback) => {
     console.log('Receipt saved to receipt.json');
   });
 
+
+
   // await Generate the PDF
   generatePDF()
     .then(() => {
+      const uniqueFileName = `time-sheet-${Date.now()}.pdf`
       console.log('PDF generated');
       // await Send the PDF
-
+      uploadFileToS3('/tmp/receipt.pdf', uniqueFileName, 'site-time-sheets')
       sendPDF()
         // .then(() => {
         //   console.log('PDF sent');
