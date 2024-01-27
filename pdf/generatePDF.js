@@ -1,5 +1,6 @@
 const PDFServicesSdk = require('@adobe/pdfservices-node-sdk');
 const fs = require('fs');
+const { uploadFileToS3 } = require('../uploadFileToS3');
 
 const OUTPUT = '/tmp/generatedReceipt.pdf';
 
@@ -37,6 +38,13 @@ documentMergeOperation.setInput(input);
 const generatePDF = () => {
     return documentMergeOperation.execute(executionContext)
     .then(result => result.saveAsFile(OUTPUT))
+    .then(() => {
+        const uniqueFileName = `time-sheet-${Date.now()}.pdf`
+        console.log('PDF generated');
+        // await Send the PDF
+        uploadFileToS3(OUTPUT, uniqueFileName, 'site-time-sheets')
+        console.log('PDF uploaded to S3');
+        })
     .catch(err => {
         if(err instanceof PDFServicesSdk.Error.ServiceApiError
             || err instanceof PDFServicesSdk.Error.ServiceUsageError) {
