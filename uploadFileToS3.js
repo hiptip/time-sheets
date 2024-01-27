@@ -7,6 +7,12 @@ const fs = require('fs');
 // const { generatePDF } = require('./pdf/generatePDF');
 // const { sendPDF } = require('./sendEmail');
 
+AWS.config.update({
+  region: 'us-east-1',
+  accessKeyId: 'AKIA47CRZMG4UTPN6COU', //process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: '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' //process.env.AWS_SECRET_ACCESS_KEY
+});
+
 const uploadFileToS3 = (fileName, key, bucket) => {
   // Read content from the file
   const fileContent = fs.readFileSync(fileName);
