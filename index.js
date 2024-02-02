@@ -33,21 +33,60 @@ module.exports.handler = async (event, context, callback) => {
   console.log(event.body)
   console.log(context)
 
-  // Save req.body to a file called receipt.json
-  fs.writeFile('/tmp/receipt.json', JSON.stringify(event), (err) => {
+  // Save req.body.clientSignature to a file called clientSignature.png
+  const base64clientSignature = req.body.clientSignature.replace(/^data:image\/png;base64,/, "");
+
+  fs.writeFile('tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
     if (err) throw err;
-    console.log('Receipt saved to receipt.json');
+    console.log('clientSignature saved to clientSignature.png');
   });
 
+  const base64supervisorSignature = req.body.supervisorSignature.replace(/^data:image\/png;base64,/, "");
+  // Save req.body.supervisorSignature to a file called supervisorSignature.png
+  fs.writeFile('tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
+    if (err) throw err;
+    console.log('supervisorSignature saved to supervisorSignature.png');
+  });
 
+  const clientSignatureKey = `clientSignature-${Date.now()}.png`;
+  const supervisorSignatureKey = `supervisorSignature-${Date.now()}.png`;
 
-  // await Generate the PDF
-  generatePDF()
+  await uploadFileToS3('tmp/clientSignature.png', clientSignatureKey, 'site-signatures')
+    .then((clientSignatureUrl) => {
+      console.log('clientSignature.png uploaded to S3 bucket');
+      console.log('clientSignatureUrl', clientSignatureUrl);
+      const imgTag = `<img src="${clientSignatureUrl}" />`;
+      req.body.clientSignature = imgTag;
+    }
+    )
+    .catch(err => {
+      console.log('Error uploading clientSignature.png to S3 bucket', err);
+    }
+    );
+
+  await uploadFileToS3('tmp/supervisorSignature.png', supervisorSignatureKey, 'site-signatures')
+    .then((supervisorSignatureUrl) => {
+      console.log('supervisorSignature.png uploaded to S3 bucket');
+      const imgTag = `<img src="${supervisorSignatureUrl}" />`;
+      req.body.supervisorSignature = imgTag;
+    }
+    )
+    .catch(err => {
+      console.log('Error uploading supervisorSignature.png to S3 bucket', err);
+    }
+    );
+
+  console.log('req.body', req.body)
+
+  // Save req.body to a file called receipt.json
+  fs.writeFile('tmp/receipt.json', JSON.stringify(req.body), (err) => {
+    if (err) throw err;
+    console.log('Receipt saved to receipt.json');
+    generatePDF(clientSignatureKey, supervisorSignatureKey)
     .then(() => {
-      const uniqueFileName = `time-sheet-${Date.now()}.pdf`
       console.log('PDF generated');
       // await Send the PDF
-      uploadFileToS3('/tmp/receipt.pdf', uniqueFileName, 'site-time-sheets')
+
       sendPDF()
         // .then(() => {
         //   console.log('PDF sent');
@@ -59,6 +98,7 @@ module.exports.handler = async (event, context, callback) => {
     .catch(err => {
       console.log('Error generating PDF', err);
     });
+  });
 
   const response = {
     statusCode: 200,

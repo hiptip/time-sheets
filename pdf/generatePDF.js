@@ -2,15 +2,6 @@ const PDFServicesSdk = require('@adobe/pdfservices-node-sdk');
 const fs = require('fs');
 const { uploadFileToS3 } = require('../uploadFileToS3');
 
-const OUTPUT = '/tmp/generatedReceipt.pdf';
-
-// If our output already exists, remove it so we can run the application again.
-if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
-
-const INPUT = './pdf/receiptTemplate.docx';
-
-const JSON_INPUT = require('../tmp/receipt.json');
-
 const credentials =  PDFServicesSdk.Credentials
     .servicePrincipalCredentialsBuilder()
     .withClientId(process.env.PDF_SERVICES_CLIENT_ID)
@@ -20,22 +11,32 @@ const credentials =  PDFServicesSdk.Credentials
 // Create an ExecutionContext using credentials
 const executionContext = PDFServicesSdk.ExecutionContext.create(credentials);
 
-const documentMerge = PDFServicesSdk.DocumentMerge,
-       documentMergeOptions = documentMerge.options,
-       options = new documentMergeOptions.DocumentMergeOptions(JSON_INPUT, documentMergeOptions.OutputFormat.PDF);
-
-// Create a new operation instance using the options instance.
-const documentMergeOperation = documentMerge.Operation.createNew(options);
-
-// Set operation input document template from a source file.
-const input = PDFServicesSdk.FileRef.createFromLocalFile(INPUT);
-documentMergeOperation.setInput(input);
-
-
 // Execute the operation and Save the result to the specified location.
 // wrap this in a function and export it
 
-const generatePDF = () => {
+const generatePDF = (clientSignatureKey, supervisorSignatureKey) => {
+    const OUTPUT = './tmp/generatedReceipt.pdf';
+
+    // If our output already exists, remove it so we can run the application again.
+    if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
+
+    const INPUT = './pdf/receiptTemplate.docx';
+
+    const JSON_INPUT = require('../tmp/receipt.json');
+
+    console.log('JSON_INPUT', JSON_INPUT);
+
+    const documentMerge = PDFServicesSdk.DocumentMerge,
+            documentMergeOptions = documentMerge.options,
+            options = new documentMergeOptions.DocumentMergeOptions(JSON_INPUT, documentMergeOptions.OutputFormat.PDF);
+
+    // Create a new operation instance using the options instance.
+    const documentMergeOperation = documentMerge.Operation.createNew(options);
+
+    // Set operation input document template from a source file.
+    const input = PDFServicesSdk.FileRef.createFromLocalFile(INPUT);
+    documentMergeOperation.setInput(input);
+
     return documentMergeOperation.execute(executionContext)
     .then(result => result.saveAsFile(OUTPUT))
     .then(() => {
