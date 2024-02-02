@@ -9,29 +9,37 @@ const fs = require('fs');
 
 AWS.config.update({
   region: 'us-east-1',
-  accessKeyId: 'AKIA47CRZMG4UTPN6COU', //process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: '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' //process.env.AWS_SECRET_ACCESS_KEY
+  accessKeyId: 'AKIA47CRZMG45JCSU3KZ', //process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: '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' //process.env.AWS_SECRET_ACCESS_KEY
 });
 
-const uploadFileToS3 = (fileName, key, bucket) => {
+//check that aws is configured
+
+console.log('aws config', AWS.config);
+
+const uploadFileToS3 = async (fileName, key, bucket) => {
   // Read content from the file
-  const fileContent = fs.readFileSync(fileName);
+  const fileContent = fs.createReadStream(fileName);
 
   // Setting up S3 upload parameters
   const params = {
     Bucket: bucket,
     Key: key, // File name you want to save as in S3
-    Body: fileContent,
-    ACL: 'public-read'
+    Body: fileContent
+    // ACL: 'public-read'
   };
 
   // Uploading files to the bucket
-  s3.upload(params, function(err, data) {
+
+  const url = await s3.upload(params, function(err, data) {
     if (err) {
       console.log('Error uploading file', err);
     }
     console.log(`File uploaded successfully. ${data.Location}`);
-  });
+    return data.Location;
+  }).promise();
+
+  return url.Location;
 }
 
 module.exports = { uploadFileToS3 };
