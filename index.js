@@ -36,7 +36,7 @@ module.exports.handler = async (event, context, callback) => {
   // Save event.clientSignature to a file called clientSignature.png
   const base64clientSignature = event.clientSignature.replace(/^data:image\/png;base64,/, "");
 
-  fs.writeFile('tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
+  fs.writeFile('./tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
     if (err) throw err;
     console.log('clientSignature saved to clientSignature.png');
   });
@@ -44,7 +44,7 @@ module.exports.handler = async (event, context, callback) => {
   const base64supervisorSignature = event.supervisorSignature.replace(/^data:image\/png;base64,/, "");
 
   // Save event.supervisorSignature to a file called supervisorSignature.png
-  fs.writeFile('tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
+  fs.writeFile('./tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
     if (err) throw err;
     console.log('supervisorSignature saved to supervisorSignature.png');
   });
@@ -52,7 +52,7 @@ module.exports.handler = async (event, context, callback) => {
   const clientSignatureKey = `clientSignature-${Date.now()}.png`;
   const supervisorSignatureKey = `supervisorSignature-${Date.now()}.png`;
 
-  await uploadFileToS3('tmp/clientSignature.png', clientSignatureKey, 'site-signatures')
+  await uploadFileToS3('./tmp/clientSignature.png', clientSignatureKey, 'site-signatures')
     .then((clientSignatureUrl) => {
       console.log('clientSignature.png uploaded to S3 bucket');
       console.log('clientSignatureUrl', clientSignatureUrl);
@@ -65,7 +65,7 @@ module.exports.handler = async (event, context, callback) => {
     }
     );
 
-  await uploadFileToS3('tmp/supervisorSignature.png', supervisorSignatureKey, 'site-signatures')
+  await uploadFileToS3('./tmp/supervisorSignature.png', supervisorSignatureKey, 'site-signatures')
     .then((supervisorSignatureUrl) => {
       console.log('supervisorSignature.png uploaded to S3 bucket');
       const imgTag = `<img src="${supervisorSignatureUrl}" />`;
@@ -80,7 +80,7 @@ module.exports.handler = async (event, context, callback) => {
   console.log('event.body', event.body)
 
   // Save event.body to a file called receipt.json
-  fs.writeFile('tmp/receipt.json', JSON.stringify(event.body), (err) => {
+  fs.writeFile('./tmp/receipt.json', JSON.stringify(event.body), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
     generatePDF(clientSignatureKey, supervisorSignatureKey)
