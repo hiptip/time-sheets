@@ -11,7 +11,7 @@ const sendPDF = () => {
 
     const mailOptions = {
       from: 'northcarolinaroadbusiness@gmail.com',
-      to: 'bicknoston@gmail.com',
+      to: ['bostonhal@gmail.com', 'bicknoston@gmail.com'],
       subject: 'Sending Email using Node.js',
       text: 'That was easy!',
       attachments: [
