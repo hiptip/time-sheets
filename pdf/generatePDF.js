@@ -15,14 +15,14 @@ const executionContext = PDFServicesSdk.ExecutionContext.create(credentials);
 // wrap this in a function and export it
 
 const generatePDF = (clientSignatureKey, supervisorSignatureKey) => {
-    const OUTPUT = './tmp/generatedReceipt.pdf';
+    const OUTPUT = '/tmp/generatedReceipt.pdf';
 
     // If our output already exists, remove it so we can run the application again.
     if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
 
     const INPUT = './pdf/receiptTemplate.docx';
 
-    const JSON_INPUT = require('../tmp/receipt.json');
+    const JSON_INPUT = require('/tmp/receipt.json');
 
     console.log('JSON_INPUT', JSON_INPUT);
 
