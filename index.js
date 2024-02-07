@@ -33,17 +33,17 @@ module.exports.handler = async (event, context, callback) => {
   console.log(event.body)
   console.log(context)
 
-  // Save event.body.clientSignature to a file called clientSignature.png
-  const base64clientSignature = event.body.clientSignature.replace(/^data:image\/png;base64,/, "");
+  // Save event.clientSignature to a file called clientSignature.png
+  const base64clientSignature = event.clientSignature.replace(/^data:image\/png;base64,/, "");
 
   fs.writeFile('tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
     if (err) throw err;
     console.log('clientSignature saved to clientSignature.png');
   });
 
-  const base64supervisorSignature = event.body.supervisorSignature.replace(/^data:image\/png;base64,/, "");
+  const base64supervisorSignature = event.supervisorSignature.replace(/^data:image\/png;base64,/, "");
 
-  // Save event.body.supervisorSignature to a file called supervisorSignature.png
+  // Save event.supervisorSignature to a file called supervisorSignature.png
   fs.writeFile('tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
     if (err) throw err;
     console.log('supervisorSignature saved to supervisorSignature.png');
@@ -57,7 +57,7 @@ module.exports.handler = async (event, context, callback) => {
       console.log('clientSignature.png uploaded to S3 bucket');
       console.log('clientSignatureUrl', clientSignatureUrl);
       const imgTag = `<img src="${clientSignatureUrl}" />`;
-      event.body.clientSignature = imgTag;
+      event.clientSignature = imgTag;
     }
     )
     .catch(err => {
@@ -69,7 +69,7 @@ module.exports.handler = async (event, context, callback) => {
     .then((supervisorSignatureUrl) => {
       console.log('supervisorSignature.png uploaded to S3 bucket');
       const imgTag = `<img src="${supervisorSignatureUrl}" />`;
-      event.body.supervisorSignature = imgTag;
+      event.supervisorSignature = imgTag;
     }
     )
     .catch(err => {
