@@ -80,7 +80,7 @@ module.exports.handler = async (event, context, callback) => {
   console.log('event.body', event.body)
 
   // Save event.body to a file called receipt.json
-  fs.writeFile('/tmp/receipt.json', JSON.stringify(event.body), (err) => {
+  fs.writeFile('/tmp/receipt.json', JSON.stringify(event), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
     generatePDF(clientSignatureKey, supervisorSignatureKey)
