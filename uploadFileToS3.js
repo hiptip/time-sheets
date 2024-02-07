@@ -9,13 +9,11 @@ const fs = require('fs');
 
 AWS.config.update({
   region: 'us-east-1',
-  accessKeyId: 'AKIA47CRZMG45JCSU3KZ', //process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: '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' //process.env.AWS_SECRET_ACCESS_KEY
+  accessKeyId: process.env.MY_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY
 });
 
 //check that aws is configured
-
-console.log('aws config', AWS.config);
 
 const uploadFileToS3 = async (fileName, key, bucket) => {
   // Read content from the file
