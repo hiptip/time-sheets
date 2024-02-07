@@ -42,6 +42,7 @@ module.exports.handler = async (event, context, callback) => {
   });
 
   const base64supervisorSignature = event.body.supervisorSignature.replace(/^data:image\/png;base64,/, "");
+
   // Save event.body.supervisorSignature to a file called supervisorSignature.png
   fs.writeFile('tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
     if (err) throw err;
