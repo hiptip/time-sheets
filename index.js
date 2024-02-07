@@ -110,6 +110,7 @@ module.exports.handler = async (event, context, callback) => {
     headers: {
       'Access-Control-Allow-Headers' : 'Content-Type',
       'Access-Control-Allow-Origin': '*',
+      "Access-Control-Allow-Credentials": true,
       'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
     },
   };
