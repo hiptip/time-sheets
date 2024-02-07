@@ -4,8 +4,8 @@ const { uploadFileToS3 } = require('./uploadFileToS3');
 const fs = require('fs');
 
 
-//   // Save req.body to a file called receipt.json
-//   fs.writeFile('pdf/receipt.json', JSON.stringify(req.body), (err) => {
+//   // Save event.body to a file called receipt.json
+//   fs.writeFile('pdf/receipt.json', JSON.stringify(event.body), (err) => {
 //     if (err) throw err;
 //     console.log('Receipt saved to receipt.json');
 //   });
@@ -33,16 +33,17 @@ module.exports.handler = async (event, context, callback) => {
   console.log(event.body)
   console.log(context)
 
-  // Save req.body.clientSignature to a file called clientSignature.png
-  const base64clientSignature = req.body.clientSignature.replace(/^data:image\/png;base64,/, "");
+  // Save event.body.clientSignature to a file called clientSignature.png
+  const base64clientSignature = event.body.clientSignature.replace(/^data:image\/png;base64,/, "");
 
   fs.writeFile('tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
     if (err) throw err;
     console.log('clientSignature saved to clientSignature.png');
   });
 
-  const base64supervisorSignature = req.body.supervisorSignature.replace(/^data:image\/png;base64,/, "");
-  // Save req.body.supervisorSignature to a file called supervisorSignature.png
+  const base64supervisorSignature = event.body.supervisorSignature.replace(/^data:image\/png;base64,/, "");
+
+  // Save event.body.supervisorSignature to a file called supervisorSignature.png
   fs.writeFile('tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
     if (err) throw err;
     console.log('supervisorSignature saved to supervisorSignature.png');
@@ -56,7 +57,7 @@ module.exports.handler = async (event, context, callback) => {
       console.log('clientSignature.png uploaded to S3 bucket');
       console.log('clientSignatureUrl', clientSignatureUrl);
       const imgTag = `<img src="${clientSignatureUrl}" />`;
-      req.body.clientSignature = imgTag;
+      event.body.clientSignature = imgTag;
     }
     )
     .catch(err => {
@@ -68,7 +69,7 @@ module.exports.handler = async (event, context, callback) => {
     .then((supervisorSignatureUrl) => {
       console.log('supervisorSignature.png uploaded to S3 bucket');
       const imgTag = `<img src="${supervisorSignatureUrl}" />`;
-      req.body.supervisorSignature = imgTag;
+      event.body.supervisorSignature = imgTag;
     }
     )
     .catch(err => {
@@ -76,10 +77,10 @@ module.exports.handler = async (event, context, callback) => {
     }
     );
 
-  console.log('req.body', req.body)
+  console.log('event.body', event.body)
 
-  // Save req.body to a file called receipt.json
-  fs.writeFile('tmp/receipt.json', JSON.stringify(req.body), (err) => {
+  // Save event.body to a file called receipt.json
+  fs.writeFile('tmp/receipt.json', JSON.stringify(event.body), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
     generatePDF(clientSignatureKey, supervisorSignatureKey)
