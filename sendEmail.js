@@ -1,6 +1,6 @@
 var nodemailer = require('nodemailer');
 
-const sendPDF = () => {
+const sendPDF = (subject) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -12,7 +12,7 @@ const sendPDF = () => {
     const mailOptions = {
       from: 'northcarolinaroadbusiness@gmail.com',
       to: ['bostonhal@gmail.com', 'justinwills02@hotmail.com', 'jonesk@k2dwconsulting.com', 'lindawilliams101254@gmail.com'],
-      subject: 'Time Sheet',
+      subject: subject,
       text: 'Please find attached the time sheet for the day.',
       attachments: [
         {

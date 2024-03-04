@@ -3,31 +3,6 @@ const { sendPDF } = require('./sendEmail');
 const { uploadFileToS3 } = require('./uploadFileToS3');
 const fs = require('fs');
 
-
-//   // Save event.body to a file called receipt.json
-//   fs.writeFile('pdf/receipt.json', JSON.stringify(event.body), (err) => {
-//     if (err) throw err;
-//     console.log('Receipt saved to receipt.json');
-//   });
-
-//   // await Generate the PDF
-//   generatePDF()
-//     .then(() => {
-//       console.log('PDF generated');
-//       // await Send the PDF
-
-//       sendPDF()
-//         // .then(() => {
-//         //   console.log('PDF sent');
-//         // })
-//         // .catch(err => {
-//         //   console.log('Error sending PDF', err);
-//         // });
-//     })
-//     .catch(err => {
-//       console.log('Error generating PDF', err);
-//     });
-
 module.exports.handler = async (event, context, callback) => {
   console.log(event)
   console.log(event.body)
