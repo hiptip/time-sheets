@@ -62,8 +62,11 @@ module.exports.handler = async (event, context, callback) => {
     .then(() => {
       console.log('PDF generated');
       // await Send the PDF
-
-      sendPDF()
+      // get teamLead from event
+      const teamLead = event.teamLead;
+      console.log('event', event)
+      console.log('teamLead', teamLead);
+      sendPDF(teamLead)
         // .then(() => {
         //   console.log('PDF sent');
         // })
