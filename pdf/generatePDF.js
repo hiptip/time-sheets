@@ -14,7 +14,7 @@ const executionContext = PDFServicesSdk.ExecutionContext.create(credentials);
 // Execute the operation and Save the result to the specified location.
 // wrap this in a function and export it
 
-const generatePDF = (clientSignatureKey, supervisorSignatureKey) => {
+const generatePDF = () => {
     const OUTPUT = '/tmp/generatedReceipt.pdf';
 
     // If our output already exists, remove it so we can run the application again.

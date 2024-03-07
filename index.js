@@ -9,48 +9,61 @@ module.exports.handler = async (event, context, callback) => {
   console.log(context)
 
   // Save event.clientSignature to a file called clientSignature.png
-  const base64clientSignature = event.clientSignature.replace(/^data:image\/png;base64,/, "");
 
-  fs.writeFile('/tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
-    if (err) throw err;
-    console.log('clientSignature saved to clientSignature.png');
-  });
+  if (event.clientSignature) {
 
-  const base64supervisorSignature = event.supervisorSignature.replace(/^data:image\/png;base64,/, "");
+    const base64clientSignature = event.clientSignature.replace(/^data:image\/png;base64,/, "");
 
-  // Save event.supervisorSignature to a file called supervisorSignature.png
-  fs.writeFile('/tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
-    if (err) throw err;
-    console.log('supervisorSignature saved to supervisorSignature.png');
-  });
+    fs.writeFile('/tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
+      if (err) throw err;
+      console.log('clientSignature saved to clientSignature.png');
+    });
 
-  const clientSignatureKey = `clientSignature-${Date.now()}.png`;
-  const supervisorSignatureKey = `supervisorSignature-${Date.now()}.png`;
+    const clientSignatureKey = `clientSignature-${Date.now()}.png`;
 
-  await uploadFileToS3('/tmp/clientSignature.png', clientSignatureKey, 'site-signatures')
-    .then((clientSignatureUrl) => {
-      console.log('clientSignature.png uploaded to S3 bucket');
-      console.log('clientSignatureUrl', clientSignatureUrl);
-      const imgTag = `<img src="${clientSignatureUrl}" />`;
-      event.clientSignature = imgTag;
+    await uploadFileToS3('/tmp/clientSignature.png', clientSignatureKey, 'site-signatures')
+      .then((clientSignatureUrl) => {
+        console.log('clientSignature.png uploaded to S3 bucket');
+        console.log('clientSignatureUrl', clientSignatureUrl);
+        const imgTag = `<img src="${clientSignatureUrl}" />`;
+        event.clientSignature = imgTag;
+      }
+      )
+      .catch(err => {
+        console.log('Error uploading clientSignature.png to S3 bucket', err);
+      }
+      );
+  }
+
+  if (event.supervisorSignature) {
+
+
+    const base64supervisorSignature = event.supervisorSignature.replace(/^data:image\/png;base64,/, "");
+
+    // Save event.supervisorSignature to a file called supervisorSignature.png
+    fs.writeFile('/tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
+      if (err) throw err;
+      console.log('supervisorSignature saved to supervisorSignature.png');
+    });
+
+    const clientSignatureKey = `clientSignature-${Date.now()}.png`;
+    const supervisorSignatureKey = `supervisorSignature-${Date.now()}.png`;
+
+    await uploadFileToS3('/tmp/supervisorSignature.png', supervisorSignatureKey, 'site-signatures')
+      .then((supervisorSignatureUrl) => {
+        console.log('supervisorSignature.png uploaded to S3 bucket');
+        const imgTag = `<img src="${supervisorSignatureUrl}" />`;
+        event.supervisorSignature = imgTag;
+      }
+      )
+      .catch(err => {
+        console.log('Error uploading supervisorSignature.png to S3 bucket', err);
+      }
+      );
+
     }
-    )
-    .catch(err => {
-      console.log('Error uploading clientSignature.png to S3 bucket', err);
-    }
-    );
 
-  await uploadFileToS3('/tmp/supervisorSignature.png', supervisorSignatureKey, 'site-signatures')
-    .then((supervisorSignatureUrl) => {
-      console.log('supervisorSignature.png uploaded to S3 bucket');
-      const imgTag = `<img src="${supervisorSignatureUrl}" />`;
-      event.supervisorSignature = imgTag;
-    }
-    )
-    .catch(err => {
-      console.log('Error uploading supervisorSignature.png to S3 bucket', err);
-    }
-    );
+
 
   console.log('event.body', event.body)
 
@@ -58,7 +71,7 @@ module.exports.handler = async (event, context, callback) => {
   fs.writeFile('/tmp/receipt.json', JSON.stringify(event), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
-    generatePDF(clientSignatureKey, supervisorSignatureKey)
+    generatePDF()
     .then(() => {
       console.log('PDF generated');
       // await Send the PDF
