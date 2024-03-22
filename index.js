@@ -67,6 +67,9 @@ module.exports.handler = async (event, context, callback) => {
 
   console.log('event.body', event.body)
 
+  // delete /tmp/receipt.json if it exists
+  if (fs.existsSync('/tmp/receipt.json')) fs.unlinkSync('/tmp/receipt.json');
+
   // Save event.body to a file called receipt.json
   fs.writeFile('/tmp/receipt.json', JSON.stringify(event), (err) => {
     if (err) throw err;
