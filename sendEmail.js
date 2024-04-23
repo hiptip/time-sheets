@@ -6,7 +6,7 @@ const sendPDF = (subject) => {
       service: 'gmail',
       auth: {
         user: 'northcarolinaroadbusiness',
-        pass: 'gumg olzk hpgz agxe',
+        pass: 'kufc sovb kybk emqx',
       }
     });
 
