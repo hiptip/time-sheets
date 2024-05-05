@@ -66,14 +66,15 @@ module.exports.handler = async (event, context, callback) => {
 
   console.log('event.body', event.body)
 
-  // delete /tmp/receipt.json if it exists
-  if (fs.existsSync('/tmp/receipt.json')) fs.unlinkSync('/tmp/receipt.json');
+
+  // create a unique filename for receipt.json
+  const uniqueFileName = `/tmp/receipt-${Date.now()}.json`;
 
   // Save event.body to a file called receipt.json
-  fs.writeFile('/tmp/receipt.json', JSON.stringify(event), (err) => {
+  fs.writeFile(uniqueFileName, JSON.stringify(event), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
-    generatePDF()
+    generatePDF(uniqueFileName)
     .then(() => {
       console.log('PDF generated');
       // await Send the PDF

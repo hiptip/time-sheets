@@ -15,7 +15,7 @@ const executionContext = PDFServicesSdk.ExecutionContext.create(credentials);
 // Execute the operation and Save the result to the specified location.
 // wrap this in a function and export it
 
-const generatePDF = () => {
+const generatePDF = (uniqueFileName) => {
     const OUTPUT = '/tmp/generatedReceipt.pdf';
 
     // If our output already exists, remove it so we can run the application again.
@@ -23,7 +23,7 @@ const generatePDF = () => {
 
     const INPUT = './pdf/receiptTemplate.docx';
 
-    const JSON_INPUT = require('/tmp/receipt.json');
+    const JSON_INPUT = require(uniqueFileName);
 
     console.log('JSON_INPUT', JSON_INPUT);
 
@@ -46,9 +46,7 @@ const generatePDF = () => {
         // await Send the PDF
         uploadFileToS3(OUTPUT, uniqueFileName, 'site-time-sheets')
         console.log('PDF uploaded to S3');
-        // delete /tmp/receipt.json
-        os.remove('/tmp/receipt.json');
-        console.log('receipt.json deleted');
+        console.log('uniqueFileName', uniqueFileName);
         })
     .catch(err => {
         if(err instanceof PDFServicesSdk.Error.ServiceApiError
