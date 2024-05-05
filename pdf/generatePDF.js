@@ -45,6 +45,9 @@ const generatePDF = () => {
         // await Send the PDF
         uploadFileToS3(OUTPUT, uniqueFileName, 'site-time-sheets')
         console.log('PDF uploaded to S3');
+        // delete /tmp/receipt.json
+        fs.unlinkSync('/tmp/receipt.json');
+        console.log('receipt.json deleted');
         })
     .catch(err => {
         if(err instanceof PDFServicesSdk.Error.ServiceApiError

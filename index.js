@@ -46,7 +46,6 @@ module.exports.handler = async (event, context, callback) => {
       console.log('supervisorSignature saved to supervisorSignature.png');
     });
 
-    const clientSignatureKey = `clientSignature-${Date.now()}.png`;
     const supervisorSignatureKey = `supervisorSignature-${Date.now()}.png`;
 
     await uploadFileToS3('/tmp/supervisorSignature.png', supervisorSignatureKey, 'site-signatures')
