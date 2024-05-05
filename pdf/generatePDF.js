@@ -1,5 +1,6 @@
 const PDFServicesSdk = require('@adobe/pdfservices-node-sdk');
 const fs = require('fs');
+const os = require('os');
 const { uploadFileToS3 } = require('../uploadFileToS3');
 
 const credentials =  PDFServicesSdk.Credentials
@@ -46,7 +47,7 @@ const generatePDF = () => {
         uploadFileToS3(OUTPUT, uniqueFileName, 'site-time-sheets')
         console.log('PDF uploaded to S3');
         // delete /tmp/receipt.json
-        fs.unlinkSync('/tmp/receipt.json');
+        os.remove('/tmp/receipt.json');
         console.log('receipt.json deleted');
         })
     .catch(err => {
