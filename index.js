@@ -1,7 +1,7 @@
 const { generatePDF } = require('./pdf/generatePDF');
 const { sendPDF } = require('./sendEmail');
 const { uploadFileToS3 } = require('./uploadFileToS3');
-const fs = require('fs');
+const fs = require('node:fs/promises');
 
 module.exports.handler = async (event, context, callback) => {
   console.log(event)
