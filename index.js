@@ -15,7 +15,7 @@ module.exports.handler = async (event, context, callback) => {
 
     const base64clientSignature = event.clientSignature.replace(/^data:image\/png;base64,/, "");
 
-    await fs.writeFile('/tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
+    await fsp.writeFile('/tmp/clientSignature.png', base64clientSignature, 'base64', (err) => {
       if (err) throw err;
       console.log('clientSignature saved to clientSignature.png');
     })
