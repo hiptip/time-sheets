@@ -1,7 +1,8 @@
 const { generatePDF } = require('./pdf/generatePDF');
 const { sendPDF } = require('./sendEmail');
 const { uploadFileToS3 } = require('./uploadFileToS3');
-const fs = require('node:fs/promises');
+const fs = require('fs');
+const fsp = require('fs').promises;
 
 module.exports.handler = async (event, context, callback) => {
   console.log(event)
@@ -41,7 +42,7 @@ module.exports.handler = async (event, context, callback) => {
     const base64supervisorSignature = event.supervisorSignature.replace(/^data:image\/png;base64,/, "");
 
     // Save event.supervisorSignature to a file called supervisorSignature.png
-    await fs.writeFile('/tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
+    await fsp.writeFile('/tmp/supervisorSignature.png', base64supervisorSignature, 'base64', (err) => {
       if (err) throw err;
       console.log('supervisorSignature saved to supervisorSignature.png');
     })
