@@ -15,13 +15,13 @@ const executionContext = PDFServicesSdk.ExecutionContext.create(credentials);
 // Execute the operation and Save the result to the specified location.
 // wrap this in a function and export it
 
-const generatePDF = (uniqueFileName) => {
+const generatePDF = (uniqueFileName, template) => {
     const OUTPUT = '/tmp/generatedReceipt.pdf';
 
     // If our output already exists, remove it so we can run the application again.
     if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
 
-    const INPUT = './pdf/receiptTemplate.docx';
+    const INPUT = `./pdf/${template}`;
 
     const JSON_INPUT = require(uniqueFileName);
 

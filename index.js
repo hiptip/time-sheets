@@ -1,3 +1,4 @@
+const e = require('cors');
 const { generatePDF } = require('./pdf/generatePDF');
 const { sendPDF } = require('./sendEmail');
 const { uploadFileToS3 } = require('./uploadFileToS3');
@@ -67,6 +68,15 @@ module.exports.handler = async (event, context, callback) => {
 
   console.log('event.body', event.body)
 
+  clientCompany = event.clientCompany ? event.clientCompany : 'S.E.C.';
+  console.log('clientCompany', clientCompany);
+  if (clientCompany === 'MEARS') {
+    template = 'receiptTemplateMEARS.docx';
+  } else if (clientCompany === 'Windsor Commercial' || clientCompany === 'Smith & Jennings') {
+    template = 'receiptTemplateNoJob.docx';
+  } else {
+    template = 'receiptTemplate.docx';
+  }
 
   // create a unique filename for receipt.json
   const uniqueFileName = `/tmp/receipt-${Date.now()}.json`;
@@ -75,7 +85,7 @@ module.exports.handler = async (event, context, callback) => {
   fs.writeFile(uniqueFileName, JSON.stringify(event), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
-    generatePDF(uniqueFileName)
+    generatePDF(uniqueFileName, template = 'receiptTemplate.docx')
     .then(() => {
       console.log('PDF generated');
       // await Send the PDF
