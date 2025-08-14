@@ -21,7 +21,7 @@ const generatePDF = (uniqueFileName, template) => {
     // If our output already exists, remove it so we can run the application again.
     if(fs.existsSync(OUTPUT)) fs.unlinkSync(OUTPUT);
 
-    const INPUT = `./pdf/${template}`;
+    const INPUT = template;
 
     const JSON_INPUT = require(uniqueFileName);
 
