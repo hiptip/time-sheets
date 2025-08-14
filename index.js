@@ -71,11 +71,11 @@ module.exports.handler = async (event, context, callback) => {
   clientCompany = event.clientCompany ? event.clientCompany : 'S.E.C.';
   console.log('clientCompany', clientCompany);
   if (clientCompany === 'MEARS') {
-    template = './receiptTemplateMEARS.docx';
+    template = 'receiptTemplateMEARS.docx';
   } else if (clientCompany === 'Windsor Commercial' || clientCompany === 'Smith & Jennings') {
-    template = './receiptTemplateNoJob.docx';
+    template = 'receiptTemplateNoJob.docx';
   } else {
-    template = './receiptTemplate.docx';
+    template = 'receiptTemplate.docx';
   }
 
   // create a unique filename for receipt.json
@@ -85,7 +85,7 @@ module.exports.handler = async (event, context, callback) => {
   fs.writeFile(uniqueFileName, JSON.stringify(event), (err) => {
     if (err) throw err;
     console.log('Receipt saved to receipt.json');
-    generatePDF(uniqueFileName, template = './receiptTemplate.docx')
+    generatePDF(uniqueFileName, template = 'receiptTemplate.docx')
     .then(() => {
       console.log('PDF generated');
       // await Send the PDF
