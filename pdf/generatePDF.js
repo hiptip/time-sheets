@@ -23,6 +23,8 @@ const generatePDF = (uniqueFileName, template) => {
 
     const INPUT = template;
 
+    console.log('INPUT', INPUT);
+
     const JSON_INPUT = require(uniqueFileName);
 
     console.log('JSON_INPUT', JSON_INPUT);
