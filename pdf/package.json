@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@adobe/pdfservices-node-sdk": "^3.4.2"
+    "@adobe/pdfservices-node-sdk": "^4.1.0"
   }
 }

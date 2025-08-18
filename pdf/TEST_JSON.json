@@ -1,0 +1,55 @@
+{
+  "teamLead": "TEST",
+  "teamLeadNumber": "6092276805",
+  "streetAddress": "219 FISK ST",
+  "cityAddress": "Pittsburgh",
+  "date": "08-12-2025",
+  "day": "",
+  "license": "2345",
+  "job": "23456",
+  "maximo": "34567",
+  "workOrder": "",
+  "clientCompany": "S.E.C.",
+  "otherClientCompany": "",
+  "equipment": [ 
+    { 
+      "id": 0, 
+      "equipment": "Arrow Board", 
+      "qty": 1, 
+      "dailyWeekly": "Daily" 
+    }
+  ],
+  "qty": "",
+  "dailyWeekly": "",
+  "employees": [
+    {
+      "id": 0,
+      "name": "Nicholas Boston",
+      "startTime": "01:00 AM",
+      "endTime": "03:00 AM",
+      "flaggerInitials": "sf",
+      "clientInitials": "fs"
+    },
+    {
+      "id": 1,
+      "name": "",
+      "startTime": "",
+      "endTime": "",
+      "flaggerInitials": "",
+      "clientInitials": ""
+    },
+    {
+      "id": 2,
+      "name": "",
+      "startTime": "",
+      "endTime": "",
+      "flaggerInitials": "",
+      "clientInitials": ""
+    }
+  ],
+  "comment": "tst",
+  "clientName": "asdgasdg",
+  "supervisorName": "hhhhh",
+  "clientSignature": "<img src=\"https://site-signatures.s3.amazonaws.com/clientSignature-1755133043174.png\" />",
+  "supervisorSignature": "<img src=\"https://site-signatures.s3.amazonaws.com/supervisorSignature-1755133044533.png\" />"
+}
