@@ -12,7 +12,7 @@ const sendPDF = (subject) => {
 
     const mailOptions = {
       from: 'northcarolinaroadbusiness@gmail.com',
-      to: ['jonesk@k2dwconsulting.com', 'lwilliamstssam@gmail.com', 'JFallonSafetySup@gmail.com', 'anhgirl2003@gmail.com'],
+      to: ['jonesk@k2dwconsulting.com', 'lwilliamstssam@gmail.com', 'anhgirl2003@gmail.com'],
       subject: subject,
       text: 'Please find attached the time sheet for the day.',
       attachments: [
